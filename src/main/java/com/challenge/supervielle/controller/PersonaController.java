@@ -134,7 +134,7 @@ public class PersonaController {
 
     @ApiOperation(value = "Borrar Persona")
     @PreAuthorize("hasRole('ROLE_supervielle')")
-    @DeleteMapping("/{tipodoc}/{nrodoc}/{pais}/{sexo}/")
+    @DeleteMapping("/persona/{tipodoc}/{nrodoc}/{pais}/{sexo}")
     public ResponseEntity<?> deletePersona(@PathVariable("tipodoc") String tipodoc, @PathVariable("nrodoc") String nrodoc, @PathVariable("pais") String pais, @PathVariable("sexo") String sexo){
 
         try {

@@ -53,7 +53,7 @@ public class PersonaServiceImpl implements PersonaService<Optional<Object>> {
                     pe.getApellido(),
                     listContactos);
         }else{
-                throw new PersonaInexistenteException("No existe la persona que intenta eliminar");
+                throw new PersonaInexistenteException("No existe la persona que esta buscando");
         }
 
 
@@ -73,7 +73,7 @@ public class PersonaServiceImpl implements PersonaService<Optional<Object>> {
                     p.setNroDocumento(model.getNroDocumento());
                     p.setSexo(model.getSexo());
                     p.setPais(model.getPais());
-                    p.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").parse(model.getFechaNacimiento()));
+                    p.setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse(model.getFechaNacimiento()));
                     p.setNombre(model.getNombre());
                     p.setApellido(model.getApellido());
                     List<ContactoEntity> listaContactos = new ArrayList();
@@ -104,7 +104,7 @@ public class PersonaServiceImpl implements PersonaService<Optional<Object>> {
         if(pe != null){
             pe.setNombre(personaModel.getNombre());
             pe.setApellido(personaModel.getApellido());
-            pe.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").parse(personaModel.getFechaNacimiento()));
+            pe.setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse(personaModel.getFechaNacimiento()));
 
             List<ContactoEntity> nuevosContactos = new ArrayList();
             for(ContactoModel contacto: personaModel.getContactos()){
@@ -157,7 +157,10 @@ public class PersonaServiceImpl implements PersonaService<Optional<Object>> {
             Map<String, BigInteger> cant = this.personaRepository.getEstadisticas();
             long cantidad_argentinos = cant.get("cantidad_argentinos").longValue();
             long cantidad_total = cant.get("cantidad_total").longValue();
-            double porcentaje = (double)cantidad_argentinos/cantidad_total;
+            double porcentaje = 0;
+            if(cantidad_argentinos!=0){
+                porcentaje = Math.round(((double)cantidad_argentinos/cantidad_total)*100);
+            }
             EstadisticasModel estadisticas = new EstadisticasModel(cant.get("cantidad_hombres").longValue(), cant.get("cantidad_mujeres").longValue(), porcentaje);
             return estadisticas;
         }catch(Exception e){

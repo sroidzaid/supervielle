@@ -37,7 +37,7 @@ public class PersonaModel {
     private String sexo;
     @NotBlank(message="La fecha de nacimiento es requerida")
     @NotNull
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private String fechaNacimiento;
     private String nombre;
     private String apellido;
@@ -55,7 +55,7 @@ public class PersonaModel {
         this.fechaNacimiento = fechaNacimiento;
         this.nombre = nombre;
         this.apellido = apellido;
-        getEdad();
+        //getEdad();
     }
 
     public PersonaModel(String tipoDocumento, String nroDocumento, String pais, String sexo, String fechaNacimiento) {
@@ -70,7 +70,7 @@ public class PersonaModel {
         if(this.fechaNacimiento!=null && !this.fechaNacimiento.isEmpty()){
             Date fechaNacDate= null;
             try {
-                fechaNacDate = new SimpleDateFormat("dd/MM/yyyy").parse(this.fechaNacimiento);
+                fechaNacDate = new SimpleDateFormat("dd-MM-yyyy").parse(this.fechaNacimiento);
                 Period periodEdad = Period.between(fechaNacDate.toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate(), LocalDate.now());

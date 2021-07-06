@@ -31,7 +31,7 @@ public class EstadisticasController {
         log.info("*****************************************************************************************");
 
         try {
-            EstadisticasModel e = (EstadisticasModel) this.personaService.obtenerEstadisticas();
+            EstadisticasModel e = this.personaService.obtenerEstadisticas();
             return ResponseEntity.ok(e);
 
         } catch (Exception e){

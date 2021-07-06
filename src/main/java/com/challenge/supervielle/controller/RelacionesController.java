@@ -51,7 +51,7 @@ public class RelacionesController {
 
     @ApiOperation(value = "Consultar si es padre de")
     @PreAuthorize("hasRole('ROLE_supervielle')")
-    @PostMapping(" /personas/{id1}/padre/{id2}")
+    @PostMapping("/personas/{id1}/padre/{id2}")
     public ResponseEntity<?> consultarPadre(@PathVariable("id1") Long id1, @PathVariable("id2") Long id2){
 
         log.info("*****************************************************************************************");
@@ -78,7 +78,7 @@ public class RelacionesController {
 
     @ApiOperation(value = "Cargar relación")
     @PreAuthorize("hasRole('ROLE_supervielle')")
-    @PostMapping(" /relacionar")
+    @PostMapping("/relacionar")
     public ResponseEntity<?> guardarRelacion(@RequestBody RelacionRequest relacionRequest){
 
         log.info("*****************************************************************************************");
