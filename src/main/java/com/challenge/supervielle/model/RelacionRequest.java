@@ -9,10 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CantidadesModel {
+public class RelacionRequest {
 
-    private Long cantidad_hombres;
-    private Long cantidad_mujeres;
-    private Long cantidad_argentinos;
-    private Long cantidad_total;
+    private Long idPersona1;
+    private Long idPersona2;
+    private String relacion;
+
+
 }

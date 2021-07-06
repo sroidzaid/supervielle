@@ -1,6 +1,8 @@
 package com.challenge.supervielle.controller;
 
+import com.challenge.supervielle.exception.PersonaExistenteException;
 import com.challenge.supervielle.exception.PersonaInexistenteException;
+import com.challenge.supervielle.exception.PersonaMenorException;
 import com.challenge.supervielle.model.PersonaModel;
 import com.challenge.supervielle.security.JwtService;
 import com.challenge.supervielle.service.PersonaService;
@@ -16,12 +18,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @Api(value = "Servicio persona")
 @Slf4j
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST,RequestMethod.DELETE})
 public class PersonaController {
 
     @Autowired
@@ -49,7 +53,7 @@ public class PersonaController {
     }
 
     @ApiOperation(value = "Buscar persona")
-    @PreAuthorize("hasRole('ROLE_SUPERVIELLE') ")
+    @PreAuthorize("hasRole('ROLE_supervielle') ")
     @GetMapping("/persona")
     @ResponseBody
     public ResponseEntity<?> getPersona(@RequestParam String tipodoc, @RequestParam String nrodoc, @RequestParam String pais, @RequestParam String sexo) {
@@ -59,20 +63,24 @@ public class PersonaController {
         log.info("*****************************************************************************************");
 
         try {
-            PersonaModel pm = (PersonaModel) this.personaService.buscarPersona(tipodoc, nrodoc, pais, sexo);
+            PersonaModel pm = this.personaService.buscarPersona(tipodoc, nrodoc, pais, sexo);
             return ResponseEntity.ok(pm);
 
-        } catch (Exception e){
-            log.info(e.getMessage());
+        }catch (PersonaInexistenteException e){
+            log.error("La persona que intenta buscar no existe ", e);
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        }  catch (Exception e){
+            log.error("Error Inesperado ", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
 
     }
 
     @ApiOperation(value = "Guardar persona")
-    @PreAuthorize("hasRole('ROLE_SUPERVIELLE')")
+    @PreAuthorize("hasRole('ROLE_supervielle')")
     @PostMapping("/persona")
-    public ResponseEntity<?> guardarPersona(@RequestBody @Validated PersonaModel persona){
+    public ResponseEntity<?> guardarPersona(@RequestBody @Valid PersonaModel persona){
 
         log.info("*****************************************************************************************");
         log.info("Nuevo registro de persona con nro documento: " + persona.getNroDocumento());
@@ -84,17 +92,26 @@ public class PersonaController {
            return new ResponseEntity<PersonaModel>(
                    persona,
                     HttpStatus.CREATED);
+
+        }catch (PersonaExistenteException e){
+            log.error("La persona que intenta registar ya existe", e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        }catch (PersonaMenorException e){
+            log.error("La persona es menor de edad y no se guardará ", e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
         }catch (Exception e){
-            log.info(e.getMessage());
+            log.error("Error Inesperado ", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }
 
     @ApiOperation(value = "Actualizacion de los datos de la persona")
-    @PreAuthorize("hasRole('ROLE_SUPERVIELLE')")
+    @PreAuthorize("hasRole('ROLE_supervielle')")
     @PutMapping (value = "/updatePersona")
-    public ResponseEntity<?> updatePersona(@RequestBody PersonaModel personaModel){
+    public ResponseEntity<?> updatePersona(@RequestBody @Valid PersonaModel personaModel){
 
         log.info("*****************************************************************************************");
         log.info("Actualizacion de datos de persona con nro documento: " + personaModel.getNroDocumento());
@@ -106,17 +123,17 @@ public class PersonaController {
             return new ResponseEntity<>(HttpStatus.OK);
 
         }catch (PersonaInexistenteException e){
-            log.info(e.getMessage());
+            log.error("La persona que intenta modificar no existe ", e);
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }  catch (Exception e){
-            log.info(e.getMessage());
+            log.error("Error Inesperado ", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }
 
     @ApiOperation(value = "Borrar Persona")
-    @PreAuthorize("hasRole('ROLE_SUPERVIELLE')")
+    @PreAuthorize("hasRole('ROLE_supervielle')")
     @DeleteMapping("/{tipodoc}/{nrodoc}/{pais}/{sexo}/")
     public ResponseEntity<?> deletePersona(@PathVariable("tipodoc") String tipodoc, @PathVariable("nrodoc") String nrodoc, @PathVariable("pais") String pais, @PathVariable("sexo") String sexo){
 
@@ -125,11 +142,11 @@ public class PersonaController {
 
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (PersonaInexistenteException e){
-            log.info(e.getMessage());
+            log.error("La persona que intenta modificar no existe ", e);
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
 
     }catch (Exception e){
-            log.info(e.getMessage());
+            log.error("Error Inesperado ", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }

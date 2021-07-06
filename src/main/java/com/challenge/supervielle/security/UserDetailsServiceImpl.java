@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         List<String> roles = new ArrayList();
         roles.add("supervielle");
-        User user = userBuilder("supervielle", "supervielle", roles);
+        User user = userBuilder("supervielle", encoder.encode("supervielle"), roles);
         return user;
     }
 

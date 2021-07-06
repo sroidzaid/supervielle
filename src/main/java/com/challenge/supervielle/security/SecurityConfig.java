@@ -37,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilter(jwtAuthorizationFilter());
 
-        // este es para que me habilite incrustar frames en html
         http.headers().frameOptions().sameOrigin();
     }
 

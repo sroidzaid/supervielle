@@ -25,6 +25,9 @@ public class ContactoEntity {
     @Column(name = "descripcion")
     private String descripcion;
 
+    @Column(name = "pe_id")
+    private Long pe_id;
+
     public ContactoEntity(String tipoContacto, String descripcion) {
         this.tipoContacto = tipoContacto;
         this.descripcion = descripcion;

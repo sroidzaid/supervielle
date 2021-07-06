@@ -1,11 +1,14 @@
 package com.challenge.supervielle.model;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -15,25 +18,27 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PersonaModel {
 
-    @NotEmpty(message="El tipo de documento es requerido")
+    @NotBlank(message="El tipo de documento es requerido")
     @NotNull
     private String tipoDocumento;
-    @NotEmpty(message="El nro de documento es requerido")
+    @NotBlank(message="El nro de documento es requerido")
     @NotNull
     private String nroDocumento;
-    @NotEmpty(message="El pais puede es requerido")
+    @NotBlank(message="El pais es requerido")
     @NotNull
     private String pais;
-    @NotEmpty(message="El sexo puede es requerido")
+    @NotBlank(message="El sexo es requerido")
     @NotNull
     private String sexo;
-    @NotEmpty(message="La fecha de nacimiento es requerida")
+    @NotBlank(message="La fecha de nacimiento es requerida")
     @NotNull
-    private Date fechaNacimiento;
-    @Min(18)
-    private int edad;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private String fechaNacimiento;
     private String nombre;
     private String apellido;
     @NotEmpty(message="La persona debe tener al menos un contacto")
@@ -42,7 +47,7 @@ public class PersonaModel {
 
 
 
-    public PersonaModel(String tipoDocumento, String nroDocumento, String pais, String sexo, Date fechaNacimiento, String nombre, String apellido) {
+    public PersonaModel(String tipoDocumento, String nroDocumento, String pais, String sexo, String fechaNacimiento, String nombre, String apellido) {
         this.tipoDocumento = tipoDocumento;
         this.nroDocumento = nroDocumento;
         this.pais = pais;
@@ -53,22 +58,29 @@ public class PersonaModel {
         getEdad();
     }
 
-    public PersonaModel(String tipoDocumento, String nroDocumento, String pais, String sexo, Date fechaNacimiento) {
+    public PersonaModel(String tipoDocumento, String nroDocumento, String pais, String sexo, String fechaNacimiento) {
         this.tipoDocumento = tipoDocumento;
         this.nroDocumento = nroDocumento;
         this.pais = pais;
         this.sexo = sexo;
         this.fechaNacimiento = fechaNacimiento;
-        getEdad();
     }
 
-    private void getEdad(){
-        if(this.fechaNacimiento!=null){
-            Period periodEdad = Period.between(fechaNacimiento.toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate(), LocalDate.now());
-            this.edad = periodEdad.getYears();
+    public int getEdad(){
+        if(this.fechaNacimiento!=null && !this.fechaNacimiento.isEmpty()){
+            Date fechaNacDate= null;
+            try {
+                fechaNacDate = new SimpleDateFormat("dd/MM/yyyy").parse(this.fechaNacimiento);
+                Period periodEdad = Period.between(fechaNacDate.toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate(), LocalDate.now());
+                return periodEdad.getYears();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
+        return 0;
     }
 
 }

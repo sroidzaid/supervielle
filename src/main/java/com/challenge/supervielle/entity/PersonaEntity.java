@@ -1,7 +1,8 @@
 package com.challenge.supervielle.entity;
 
-import com.challenge.supervielle.model.PersonaID;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,23 +17,23 @@ import java.util.List;
 @EqualsAndHashCode
 @Entity
 @Table(name = "persona")
-@IdClass(PersonaID.class)
 public class PersonaEntity implements Serializable {
 
+    @Id
     @Column(name="id")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Id
+    @Column(name = "tipo_documento")
     private String tipoDocumento;
 
-    @Id
+    @Column(name = "nro_documento")
     private String nroDocumento;
 
-    @Id
+    @Column(name = "pais")
     private String pais;
 
-    @Id
+    @Column(name = "sexo")
     private String sexo;
 
     @Column(name = "fecha_nacimiento")
@@ -44,12 +45,15 @@ public class PersonaEntity implements Serializable {
     @Column(name = "apellido")
     private String apellido;
 
-    @OneToMany(
-            mappedBy = "",
-            cascade= CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    private List<ContactoEntity> contactos = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "pe_id")
+    private List<ContactoEntity> contactos;
+
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "pe_id")
+    private List<RelacionEntity> relaciones;
 
 
 }

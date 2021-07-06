@@ -20,14 +20,14 @@ public class EstadisticasController {
     @Autowired
     private PersonaService personaService;
 
-    @ApiOperation(value = "Obtener Relaciones")
-    @PreAuthorize("hasRole('ROLE_SUPERVIELLE') ")
+    @ApiOperation(value = "Obtener Estadisticas")
+    @PreAuthorize("hasRole('ROLE_supervielle') ")
     @GetMapping()
     @ResponseBody
-    public ResponseEntity<?> getRelaciones(@PathVariable("id1") Long id1, @PathVariable("id2") Long id2) {
+    public ResponseEntity<?> getEstadisticas() {
 
         log.info("*****************************************************************************************");
-        log.info("Consulta las relaciones entre las personas con ids: " +id1+ " y " +id2);
+        log.info("Consulta de estadisticas");
         log.info("*****************************************************************************************");
 
         try {
