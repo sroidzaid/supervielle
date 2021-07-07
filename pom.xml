@@ -11,7 +11,7 @@
 	<groupId>com.challenge</groupId>
 	<artifactId>supervielle</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>supervielle</name>
 	<description>Challenge Supervielle</description>
 	<properties>
