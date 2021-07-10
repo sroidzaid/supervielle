@@ -1,8 +1,7 @@
 package com.challenge.supervielle.model;
 
-import lombok.*;
-
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

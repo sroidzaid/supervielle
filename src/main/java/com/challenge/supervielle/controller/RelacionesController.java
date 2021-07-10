@@ -1,7 +1,6 @@
 package com.challenge.supervielle.controller;
 
 import com.challenge.supervielle.exception.PersonaInexistenteException;
-import com.challenge.supervielle.model.PersonaModel;
 import com.challenge.supervielle.model.RelacionModel;
 import com.challenge.supervielle.model.RelacionRequest;
 import com.challenge.supervielle.service.PersonaService;
@@ -13,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @Api(value = "Relaciones")
@@ -40,7 +37,7 @@ public class RelacionesController {
 
         }catch (PersonaInexistenteException e){
                 log.error("Error al buscar la persona", e);
-                return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         } catch (Exception e){
             log.info(e.getMessage());
@@ -68,7 +65,7 @@ public class RelacionesController {
             }
         }catch (PersonaInexistenteException e){
             log.error("Error al buscar la persona", e);
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
             log.info(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

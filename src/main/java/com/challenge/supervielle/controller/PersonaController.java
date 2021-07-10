@@ -67,7 +67,7 @@ public class PersonaController {
 
         }catch (PersonaInexistenteException e){
             log.error("La persona que intenta buscar no existe ", e);
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }  catch (Exception e){
             log.error("Error Inesperado ", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -123,7 +123,7 @@ public class PersonaController {
 
         }catch (PersonaInexistenteException e){
             log.error("La persona que intenta modificar no existe ", e);
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }  catch (Exception e){
             log.error("Error Inesperado ", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -142,7 +142,7 @@ public class PersonaController {
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (PersonaInexistenteException e){
             log.error("La persona que intenta modificar no existe ", e);
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }catch (Exception e){
             log.error("Error Inesperado ", e);

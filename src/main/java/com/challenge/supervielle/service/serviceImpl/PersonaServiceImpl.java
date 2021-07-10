@@ -6,13 +6,15 @@ import com.challenge.supervielle.entity.RelacionEntity;
 import com.challenge.supervielle.exception.PersonaExistenteException;
 import com.challenge.supervielle.exception.PersonaInexistenteException;
 import com.challenge.supervielle.exception.PersonaMenorException;
-import com.challenge.supervielle.model.*;
+import com.challenge.supervielle.model.ContactoModel;
+import com.challenge.supervielle.model.EstadisticasModel;
+import com.challenge.supervielle.model.PersonaModel;
+import com.challenge.supervielle.model.RelacionModel;
 import com.challenge.supervielle.repository.PersonaRepository;
 import com.challenge.supervielle.service.PersonaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.math.BigInteger;
 import java.text.ParseException;
